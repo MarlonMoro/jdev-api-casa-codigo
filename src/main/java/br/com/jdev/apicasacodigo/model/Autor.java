@@ -22,23 +22,17 @@ public class Autor {
   private String email;
   @Column(name = "description", length = 400, nullable = false)
   private String description;
-
   @Column(name = "created_time", nullable = false)
-  private LocalDateTime createdTime;
+  private LocalDateTime createdTime = LocalDateTime.now();
 
   @Deprecated
   public Autor() {
   }
 
-  private Autor(String name, String email, String description) {
+  public Autor(String name, String email, String description) {
     this.name = name;
     this.email = email;
     this.description = description;
-    this.createdTime = LocalDateTime.now();
   }
 
-  public static Autor getInstance(AutorRequest autorRequest) {
-    return new Autor(autorRequest.getName(), autorRequest.getEmail(),
-        autorRequest.getDescription());
-  }
 }

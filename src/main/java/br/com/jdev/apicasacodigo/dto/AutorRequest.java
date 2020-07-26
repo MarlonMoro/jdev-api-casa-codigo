@@ -1,5 +1,6 @@
 package br.com.jdev.apicasacodigo.dto;
 
+import br.com.jdev.apicasacodigo.model.Autor;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -19,5 +20,9 @@ public class AutorRequest {
 
   @Deprecated
   public AutorRequest() {
+  }
+
+  public Autor toModel(){
+    return new Autor(this.name, this.email, this.description);
   }
 }
