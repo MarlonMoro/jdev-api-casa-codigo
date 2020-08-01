@@ -1,9 +1,7 @@
 package br.com.jdev.apicasacodigo.resource.validators;
 
 import br.com.jdev.apicasacodigo.dto.CategoryRequest;
-import br.com.jdev.apicasacodigo.model.Category;
 import br.com.jdev.apicasacodigo.repository.CategoryRepository;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
