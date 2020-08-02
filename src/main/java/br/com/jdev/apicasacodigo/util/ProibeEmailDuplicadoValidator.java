@@ -1,4 +1,4 @@
-package br.com.jdev.apicasacodigo.resource;
+package br.com.jdev.apicasacodigo.util;
 
 import br.com.jdev.apicasacodigo.dto.AutorRequest;
 import br.com.jdev.apicasacodigo.model.Autor;

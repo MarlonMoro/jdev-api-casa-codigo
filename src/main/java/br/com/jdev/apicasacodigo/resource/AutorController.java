@@ -3,6 +3,7 @@ package br.com.jdev.apicasacodigo.resource;
 import br.com.jdev.apicasacodigo.dto.AutorRequest;
 import br.com.jdev.apicasacodigo.dto.AutorResponse;
 import br.com.jdev.apicasacodigo.model.Autor;
+import br.com.jdev.apicasacodigo.util.ProibeEmailDuplicadoValidator;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
