@@ -1,18 +1,14 @@
 package br.com.jdev.apicasacodigo.dto;
 
-import br.com.jdev.apicasacodigo.model.Autor;
-import br.com.jdev.apicasacodigo.model.Category;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import lombok.Getter;
 
+@Getter
 public class BookRequest {
 
   @NotBlank

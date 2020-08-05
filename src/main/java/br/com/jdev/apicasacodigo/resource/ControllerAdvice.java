@@ -1,8 +1,11 @@
 package br.com.jdev.apicasacodigo.resource;
 
+import br.com.jdev.apicasacodigo.dto.ResponseError;
 import br.com.jdev.apicasacodigo.dto.ValidationErrorsDto;
+import br.com.jdev.apicasacodigo.exceptions.NotFoundException;
 import java.util.List;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -13,6 +16,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ControllerAdvice {
 
+
+  @ExceptionHandler(NotFoundException.class)
+  public ResponseEntity<?> businnesError(NotFoundException ex) {
+
+    return new ResponseEntity<>(
+        new ResponseError(ex.getMessage(), String.valueOf(ex.getHttpStatus().value())),
+        ex.getHttpStatus());
+
+  }
 
 
   @ResponseStatus(HttpStatus.BAD_REQUEST)

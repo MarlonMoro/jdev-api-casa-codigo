@@ -1,5 +1,6 @@
 package br.com.jdev.apicasacodigo.model;
 
+import br.com.jdev.apicasacodigo.dto.BookRequest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import javax.persistence.Column;
@@ -70,7 +71,9 @@ public class Book {
     this.autor = autor;
   }
 
-  public static Book getInstance(){
-    return new Book();
+  public static Book getInstance(BookRequest bookRequest, Category category, Autor autor) {
+    return new Book(bookRequest.getTitle(), bookRequest.getResume(), bookRequest.getSummary(),
+        bookRequest.getPrice(), bookRequest.getPageNumber(), bookRequest.getIsbn(),
+        bookRequest.getPublicationDate(), category, autor);
   }
 }
