@@ -35,7 +35,7 @@ public class Book {
   @Column(name = "price", nullable = false)
   private BigDecimal price;
   @Min(100)
-  @Column(name = "pageNumber", nullable = false)
+  @Column(name = "page_number", nullable = false)
   private Integer pageNumber;
   @Column(name = "isbn", nullable = false, unique = true)
   private String isbn;
