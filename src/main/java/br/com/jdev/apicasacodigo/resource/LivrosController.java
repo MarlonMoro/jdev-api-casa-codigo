@@ -2,6 +2,8 @@ package br.com.jdev.apicasacodigo.resource;
 
 import br.com.jdev.apicasacodigo.dto.NovoLivroRequest;
 import br.com.jdev.apicasacodigo.model.Livro;
+import java.util.List;
+import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -25,6 +27,13 @@ public class LivrosController {
     Livro livro = livroRequest.toModel(manager);
     manager.persist(livro);
     return ResponseEntity.ok(livro);
+  }
+
+  public ResponseEntity<?> listarTodosLivros() {
+
+    List livros = manager.createQuery("select b from livro b ").getResultList();
+
+    return Optional.of(livros).map(ResponseEntity::ok).orElse(ResponseEntity.noContent().build());
   }
 
 }
