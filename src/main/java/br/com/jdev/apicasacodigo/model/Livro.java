@@ -20,7 +20,7 @@ import lombok.Getter;
 public class Livro {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   public Long id;
   private String titulo;
   private String resumo;
