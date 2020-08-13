@@ -1,6 +1,5 @@
 package br.com.jdev.apicasacodigo.model;
 
-import br.com.jdev.apicasacodigo.dto.AutorRequest;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
