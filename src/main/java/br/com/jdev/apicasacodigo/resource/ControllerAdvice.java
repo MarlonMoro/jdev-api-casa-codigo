@@ -1,12 +1,15 @@
 package br.com.jdev.apicasacodigo.resource;
 
 
+import br.com.jdev.apicasacodigo.dto.ErrorResponse;
 import br.com.jdev.apicasacodigo.dto.ValidationErrorsDto;
+import br.com.jdev.apicasacodigo.exceptions.BusinessException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -42,6 +45,19 @@ public class ControllerAdvice {
 
   private String getMessageError(ObjectError objectError) {
     return messageSource.getMessage(objectError, LocaleContextHolder.getLocale());
+  }
+
+  @ExceptionHandler(BusinessException.class)
+  public ResponseEntity<?> bussinessErrorHandler(BusinessException ex) {
+
+    return ResponseEntity.status(ex.getStatus())
+        .body(new ErrorResponse(ex.getMessage(), ex.getObjectError()));
+  }
+
+  @ExceptionHandler(Exception.class)
+  public String teste(Exception ex){
+    System.out.printf("asfs");
+    return " ";
   }
 
 }

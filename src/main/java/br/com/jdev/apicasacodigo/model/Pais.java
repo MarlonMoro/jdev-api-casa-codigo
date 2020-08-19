@@ -21,4 +21,23 @@ public class Pais {
   @OneToMany(mappedBy = "pais")
   private List<Estado> estados;
 
+  @Deprecated
+  public Pais() {
+  }
+
+  public Pais(String nome) {
+    this.nome = nome;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public String getNome() {
+    return nome;
+  }
+
+  public List<Estado> getEstados() {
+    return estados;
+  }
 }
