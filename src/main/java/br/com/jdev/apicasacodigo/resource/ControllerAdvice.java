@@ -54,10 +54,5 @@ public class ControllerAdvice {
         .body(new ErrorResponse(ex.getMessage(), ex.getObjectError()));
   }
 
-  @ExceptionHandler(Exception.class)
-  public String teste(Exception ex){
-    System.out.printf("asfs");
-    return " ";
-  }
 
 }
