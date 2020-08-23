@@ -11,7 +11,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 @Component
-public class CompraEstadoValidator implements Validator {
+public class EstadoPertencePaisValidator implements Validator {
 
   @Autowired
   private PaisRepository paisRepository;
