@@ -1,5 +1,6 @@
 package br.com.jdev.apicasacodigo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,6 +20,7 @@ public class Estado {
   @Column(name = "nome", nullable = false, unique = true)
   private String nome;
 
+  @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "pais_id", nullable = false)
   private Pais pais;
@@ -38,5 +40,9 @@ public class Estado {
 
   public Pais getPais() {
     return pais;
+  }
+
+  public boolean estadoPercente(Pais pais){
+    return this.pais.getNome().equalsIgnoreCase(pais.getNome());
   }
 }

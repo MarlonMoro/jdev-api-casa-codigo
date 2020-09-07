@@ -2,6 +2,7 @@ package br.com.jdev.apicasacodigo.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -49,5 +50,23 @@ public class Livro {
     this.dataPublicacao = dataPublicacao;
     this.categoria = categoria;
     this.autor = autor;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Livro livro = (Livro) o;
+    return titulo.equals(livro.titulo) &&
+        isbn.equals(livro.isbn);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(titulo, isbn);
   }
 }

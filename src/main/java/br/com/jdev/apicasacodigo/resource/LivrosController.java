@@ -4,7 +4,6 @@ import br.com.jdev.apicasacodigo.dto.NovoLivroRequest;
 import br.com.jdev.apicasacodigo.model.Livro;
 import br.com.jdev.apicasacodigo.repository.LivroRepository;
 import java.util.List;
-import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;

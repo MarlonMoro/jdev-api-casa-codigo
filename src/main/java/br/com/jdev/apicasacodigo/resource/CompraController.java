@@ -1,17 +1,18 @@
 package br.com.jdev.apicasacodigo.resource;
 
-import br.com.jdev.apicasacodigo.dto.CompraDto;
+import br.com.jdev.apicasacodigo.dto.NovaCompraRequest;
 import br.com.jdev.apicasacodigo.exceptions.BusinessException;
 import br.com.jdev.apicasacodigo.model.Compra;
 import br.com.jdev.apicasacodigo.service.CompraFactory;
-import br.com.jdev.apicasacodigo.util.EstadoPertencePaisValidator;
 import br.com.jdev.apicasacodigo.util.DocumentoValidator;
+import br.com.jdev.apicasacodigo.util.EstadoPertencePaisValidator;
 import br.com.jdev.apicasacodigo.util.ValorTotalCompraValidator;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,22 +30,30 @@ public class CompraController {
   private DocumentoValidator documentoValidator;
   @Autowired
   private ValorTotalCompraValidator valorTotalCompraValidator;
-  @Autowired
-  private CompraFactory compraFactory;
+
+  @PersistenceContext
+  private EntityManager entityManager;
+
 
   @InitBinder
-  public void initBinder(WebDataBinder dataBinder){
-    dataBinder.addValidators(estadoPertencePaisValidator, documentoValidator, valorTotalCompraValidator);
+  public void initBinder(WebDataBinder dataBinder) {
+    dataBinder
+        .addValidators(estadoPertencePaisValidator, documentoValidator, valorTotalCompraValidator);
   }
 
 
   @PostMapping
-  public ResponseEntity<?> finalizarCompra(@RequestBody @Valid CompraDto compra)
+  @Transactional
+  public ResponseEntity<?> finalizarCompra(@RequestBody @Valid NovaCompraRequest compraRequest)
       throws BusinessException {
 
     System.out.println("teste");
 
-    Compra savedCompra = compraFactory.build(compra);
+    Compra compra = compraRequest.toModel(entityManager);
+
+    entityManager.persist(compra);
+
+    Compra outraCompra = entityManager.find(Compra.class, compra.getId());
 
     return ResponseEntity.ok(compra);
   }

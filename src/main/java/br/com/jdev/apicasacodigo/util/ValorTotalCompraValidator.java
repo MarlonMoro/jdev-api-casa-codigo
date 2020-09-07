@@ -1,12 +1,14 @@
 package br.com.jdev.apicasacodigo.util;
 
-import br.com.jdev.apicasacodigo.dto.CompraDto;
+import br.com.jdev.apicasacodigo.dto.NovaCompraRequest;
 import br.com.jdev.apicasacodigo.model.Livro;
 import br.com.jdev.apicasacodigo.repository.LivroRepository;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -15,37 +17,43 @@ import org.springframework.validation.Validator;
 @Component
 public class ValorTotalCompraValidator implements Validator {
 
-  @Autowired
-  private LivroRepository livroRepository;
+  @PersistenceContext
+  private EntityManager manager;
 
   @Override
   public boolean supports(Class<?> aClass) {
-    return CompraDto.class.isAssignableFrom(aClass);
+    return NovaCompraRequest.class.isAssignableFrom(aClass);
   }
 
   @Override
   public void validate(Object o, Errors errors) {
-    CompraDto compraDto = (CompraDto) o;
+    NovaCompraRequest novaCompraRequest = (NovaCompraRequest) o;
 
-    Map<Integer, Livro> quantidadeLivro = new HashMap<>();
+    Map<Integer, BigDecimal> quantidadeLivro = new HashMap<>();
 
-    compraDto.getItens().forEach(livro -> {
-      Optional<Livro> foundedLivro = livroRepository.findById(livro.getId());
-      if (foundedLivro.isPresent()) {
-        quantidadeLivro.put(livro.getQuantidade(), foundedLivro.get());
+    novaCompraRequest.getPedido().getItens().forEach(itemRequest -> {
+      Livro livro = manager.find(Livro.class, itemRequest.getId());
+      if(livro == null){
+        errors.rejectValue("pedido", null, String.format("Item com id %d informado é inválido", itemRequest.getId()));
       } else {
-        errors.rejectValue("itens", null,
-            String.format("O livro com id %d não existe, informe um livro válido", livro.getId()));
+        quantidadeLivro.put(itemRequest.getQuantidade(), livro.getPreco());
       }
-    });
 
-    quantidadeLivro.entrySet().stream()
-        .map(entry -> entry.getValue().getPreco().multiply(BigDecimal.valueOf(entry.getKey())))
-        .reduce(BigDecimal::add).ifPresent(totalcalculado -> {
-      if (compraDto.getTotal().compareTo(totalcalculado) != 0) {
-        errors.rejectValue("total", null, "Valor total inválido!");
-      }
     });
+    if(errors.hasErrors())
+      return;
+
+    Optional<BigDecimal> optTotal = quantidadeLivro.entrySet().stream()
+        .map(entry -> BigDecimal.valueOf(entry.getKey()).multiply(entry.getValue()))
+        .reduce(BigDecimal::add);
+
+    if(optTotal.isPresent()){
+      if(novaCompraRequest.getPedido().getTotal().compareTo(optTotal.get()) != 0){
+        errors.rejectValue("pedido", null, "Total informado invalido");
+      }
+    } else {
+      errors.rejectValue("itens", null, "Erro ao validar total de itens");
+    }
 
   }
 }

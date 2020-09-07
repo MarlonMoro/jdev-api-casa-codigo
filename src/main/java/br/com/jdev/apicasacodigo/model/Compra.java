@@ -1,126 +1,94 @@
 package br.com.jdev.apicasacodigo.model;
 
-import java.math.BigDecimal;
+import java.util.function.Function;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import lombok.Getter;
+import org.springframework.util.Assert;
 
 @Entity
 @Table(name = "compra")
+@Getter
 public class Compra {
-
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
   private Long id;
+
   @Column(name = "nome", nullable = false)
   private String nome;
+
   @Column(name = "sobrenome", nullable = false)
   private String sobrenome;
+
   @Column(name = "documento", nullable = false)
   private String documento;
+
   @Column(name = "email", nullable = false)
   private String email;
+
   @Column(name = "telefone", nullable = false)
   private String telefone;
+
   @ManyToOne
   @JoinColumn(name = "pais_id")
   private Pais pais;
+
   @ManyToOne
   @JoinColumn(name = "estado_id")
   private Estado estado;
+
   @Column(name = "cep", nullable = false)
   private String cep;
+
   @Column(name = "cidade", nullable = false)
   private String cidade;
+
   @Column(name = "endereco", nullable = false)
   private String endereco;
+
   @Column(name = "complemento")
   private String complemento;
-  @Column(name = "total", nullable = false)
-  private BigDecimal total;
 
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, mappedBy = "compra")
+  private Pedido pedido;
 
-  public Compra(@Email @NotBlank String email, @NotBlank String telefone, @NotBlank String nome, @NotBlank String sobrenome,
-      @NotBlank String documento, @NotBlank String endereco, @NotBlank String cep,
-      String complemento, Pais pais, @NotBlank String cidade, @Positive @NotNull BigDecimal total) {
+  public Compra() {
+  }
 
-    this.email = email;
-    this.telefone = telefone;
+  public Compra(String email, String nome, String sobrenome, String documento, String cidade, String endereco,
+      String complemento, Pais pais, String telefone, String cep, Function<Compra, Pedido> funcaoCriaPedido) {
     this.nome = nome;
     this.sobrenome = sobrenome;
     this.documento = documento;
-    this.endereco = endereco;
-    this.cep = cep;
-    this.complemento = complemento;
+    this.email = email;
+    this.telefone = telefone;
     this.pais = pais;
+    this.cep = cep;
     this.cidade = cidade;
-    this.total = total;
+    this.endereco = endereco;
+    this.complemento = complemento;
+    this.pedido = funcaoCriaPedido.apply(this);
+
   }
 
-  public void setEstado(Estado estado) {
+
+  public void setEstado(@NotNull @Valid Estado estado) {
+    Assert.notNull(this.pais, "Para associar um estado, primeiro deve existir um pais!");
+    Assert.isTrue(estado.estadoPercente(this.pais), "Estado tem que ser do mesmo pais");
     this.estado = estado;
   }
 
-  public Long getId() {
-    return id;
-  }
-
-  public String getNome() {
-    return nome;
-  }
-
-  public String getSobrenome() {
-    return sobrenome;
-  }
-
-  public String getDocumento() {
-    return documento;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public String getTelefone() {
-    return telefone;
-  }
-
-  public Pais getPais() {
-    return pais;
-  }
-
-  public Estado getEstado() {
-    return estado;
-  }
-
-  public String getCep() {
-    return cep;
-  }
-
-  public String getCidade() {
-    return cidade;
-  }
-
-  public String getEndereco() {
-    return endereco;
-  }
-
-  public String getComplemento() {
-    return complemento;
-  }
-
-  public BigDecimal getTotal() {
-    return total;
-  }
 }

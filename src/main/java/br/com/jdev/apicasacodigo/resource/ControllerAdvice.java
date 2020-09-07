@@ -5,6 +5,7 @@ import br.com.jdev.apicasacodigo.dto.ErrorResponse;
 import br.com.jdev.apicasacodigo.dto.ValidationErrorsDto;
 import br.com.jdev.apicasacodigo.exceptions.BusinessException;
 import java.util.List;
+import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -44,7 +45,7 @@ public class ControllerAdvice {
   }
 
   private String getMessageError(ObjectError objectError) {
-    return messageSource.getMessage(objectError, LocaleContextHolder.getLocale());
+    return messageSource.getMessage(objectError, new Locale("BB"));
   }
 
   @ExceptionHandler(BusinessException.class)

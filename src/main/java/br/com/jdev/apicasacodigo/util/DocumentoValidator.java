@@ -1,6 +1,6 @@
 package br.com.jdev.apicasacodigo.util;
 
-import br.com.jdev.apicasacodigo.dto.CompraDto;
+import br.com.jdev.apicasacodigo.dto.NovaCompraRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.validation.Errors;
@@ -11,17 +11,17 @@ public class DocumentoValidator implements Validator {
 
   @Override
   public boolean supports(Class<?> aClass) {
-    return CompraDto.class.isAssignableFrom(aClass);
+    return NovaCompraRequest.class.isAssignableFrom(aClass);
   }
 
   @Override
   public void validate(Object o, Errors errors) {
-    CompraDto compraDto = (CompraDto) o;
-    if (ObjectUtils.isEmpty(compraDto.getDocumento())) {
+    NovaCompraRequest novaCompraRequest = (NovaCompraRequest) o;
+    if (ObjectUtils.isEmpty(novaCompraRequest.getDocumento())) {
       errors.rejectValue("documento null", null, "Um documento deve ser informado, CPF ou CNPJ");
     }
 
-    if (!compraDto.documentoValido()) {
+    if (!novaCompraRequest.documentoValido()) {
       errors.rejectValue("documento", null, "Um documento valido deve ser informado, CPF ou CNPJ");
     }
 

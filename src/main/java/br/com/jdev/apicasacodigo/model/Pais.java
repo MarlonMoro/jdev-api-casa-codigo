@@ -1,5 +1,6 @@
 package br.com.jdev.apicasacodigo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,11 +14,13 @@ import javax.persistence.Table;
 @Table(name = "pais")
 public class Pais {
 
+  @JsonIgnore
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   @Column(name = "nome", nullable = false, unique = true)
   private String nome;
+  @JsonIgnore
   @OneToMany(mappedBy = "pais")
   private List<Estado> estados;
 
