@@ -10,6 +10,8 @@ insert into pais (id, nome) values (2, 'Brasil');
 
 insert into estado (id, nome, pais_id) values (1, 'Minas Gerais', 2), (2, 'Goias', 2);
 
+insert into cupom (id, codigo, percentual_desconto, validade) values (1, 'BLACKFRIDAY', 10.0, '2020-11-11');
+
 
 
 
