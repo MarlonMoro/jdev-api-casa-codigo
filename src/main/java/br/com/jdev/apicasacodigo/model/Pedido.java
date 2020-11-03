@@ -1,5 +1,6 @@
 package br.com.jdev.apicasacodigo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,6 +23,7 @@ public class Pedido {
   @Column(name = "id")
   private Long id;
 
+  @JsonIgnore
   @OneToOne
   @MapsId
   private Compra compra;

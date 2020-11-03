@@ -3,6 +3,7 @@ package br.com.jdev.apicasacodigo.model;
 import java.util.function.Function;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -64,6 +65,8 @@ public class Compra {
 
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, mappedBy = "compra")
   private Pedido pedido;
+  @Embedded
+  private CupomAplicado cupomAplicado;
 
   public Compra() {
   }
@@ -91,4 +94,9 @@ public class Compra {
     this.estado = estado;
   }
 
+  public void aplicaCupom(Cupom cupom) {
+    Assert.isTrue(cupom.isValid(), "O cupom precisa estar valido");
+    Assert.isNull(this.cupomAplicado, "Nao e permitido trocar um cupom ja aplicado");
+    this.cupomAplicado = new CupomAplicado(cupom);
+  }
 }

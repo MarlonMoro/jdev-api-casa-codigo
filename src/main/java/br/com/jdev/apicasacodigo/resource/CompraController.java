@@ -3,6 +3,7 @@ package br.com.jdev.apicasacodigo.resource;
 import br.com.jdev.apicasacodigo.dto.NovaCompraRequest;
 import br.com.jdev.apicasacodigo.exceptions.BusinessException;
 import br.com.jdev.apicasacodigo.model.Compra;
+import br.com.jdev.apicasacodigo.repository.CupomRepository;
 import br.com.jdev.apicasacodigo.service.CompraFactory;
 import br.com.jdev.apicasacodigo.util.DocumentoValidator;
 import br.com.jdev.apicasacodigo.util.EstadoPertencePaisValidator;
@@ -30,6 +31,8 @@ public class CompraController {
   private DocumentoValidator documentoValidator;
   @Autowired
   private ValorTotalCompraValidator valorTotalCompraValidator;
+  @Autowired
+  private CupomRepository cupomRepository;
 
   @PersistenceContext
   private EntityManager entityManager;
@@ -49,11 +52,9 @@ public class CompraController {
 
     System.out.println("teste");
 
-    Compra compra = compraRequest.toModel(entityManager);
+    Compra compra = compraRequest.toModel(entityManager, cupomRepository);
 
     entityManager.persist(compra);
-
-    Compra outraCompra = entityManager.find(Compra.class, compra.getId());
 
     return ResponseEntity.ok(compra);
   }
