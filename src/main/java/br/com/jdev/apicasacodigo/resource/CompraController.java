@@ -5,6 +5,7 @@ import br.com.jdev.apicasacodigo.exceptions.BusinessException;
 import br.com.jdev.apicasacodigo.model.Compra;
 import br.com.jdev.apicasacodigo.repository.CupomRepository;
 import br.com.jdev.apicasacodigo.service.CompraFactory;
+import br.com.jdev.apicasacodigo.util.CupomValidoValidator;
 import br.com.jdev.apicasacodigo.util.DocumentoValidator;
 import br.com.jdev.apicasacodigo.util.EstadoPertencePaisValidator;
 import br.com.jdev.apicasacodigo.util.ValorTotalCompraValidator;
@@ -32,6 +33,8 @@ public class CompraController {
   @Autowired
   private ValorTotalCompraValidator valorTotalCompraValidator;
   @Autowired
+  private CupomValidoValidator cupomValidoValidator;
+  @Autowired
   private CupomRepository cupomRepository;
 
   @PersistenceContext
@@ -41,7 +44,7 @@ public class CompraController {
   @InitBinder
   public void initBinder(WebDataBinder dataBinder) {
     dataBinder
-        .addValidators(estadoPertencePaisValidator, documentoValidator, valorTotalCompraValidator);
+        .addValidators(estadoPertencePaisValidator, documentoValidator, valorTotalCompraValidator, cupomValidoValidator);
   }
 
 

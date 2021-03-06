@@ -63,7 +63,9 @@ public class NovaCompraRequest {
 
   private String codigoCupom;
 
-
+  public Optional<String> getCodigoCupom() {
+    return Optional.ofNullable(codigoCupom);
+  }
 
   public boolean documentoValido() {
     Assert.hasLength(this.documento, "Um documento não pode ser nulo");
