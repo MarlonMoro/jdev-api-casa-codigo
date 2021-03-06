@@ -50,7 +50,23 @@ public class NovoLivroRequest {
   public NovoLivroRequest() {
   }
 
-
+  public NovoLivroRequest(@NotBlank String titulo,
+      @NotBlank @Size(max = 500) String resumo,
+      @NotBlank String sumario,
+      @NotNull @Min(20) BigDecimal preco, @Min(100) int numeroPaginas,
+      @NotBlank String isbn,
+      @NotNull @Future LocalDate dataPublicacao,
+      @NotNull Long idCategoria, @NotNull Long idAutor) {
+    this.titulo = titulo;
+    this.resumo = resumo;
+    this.sumario = sumario;
+    this.preco = preco;
+    this.numeroPaginas = numeroPaginas;
+    this.isbn = isbn;
+    this.dataPublicacao = dataPublicacao;
+    this.idCategoria = idCategoria;
+    this.idAutor = idAutor;
+  }
 
   public Livro toModel(EntityManager manager) {
     Autor autor = manager.find(Autor.class, this.idAutor);
