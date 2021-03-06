@@ -50,8 +50,7 @@ public class CompraController {
 
   @PostMapping
   @Transactional
-  public ResponseEntity<?> finalizarCompra(@RequestBody @Valid NovaCompraRequest compraRequest)
-      throws BusinessException {
+  public ResponseEntity<?> finalizarCompra(@RequestBody @Valid NovaCompraRequest compraRequest) {
 
     System.out.println("teste");
 
